@@ -15,7 +15,7 @@ export default class App extends Component {
     temp: '',
     pressure: '',
     wind: '',
-    err: ''
+    error: ''
   }
   handleInputChange = e => {
     this.setState({
@@ -24,7 +24,7 @@ export default class App extends Component {
   }
   handleCitySubmit = e => {
     e.preventDefault()
-    const API = `api.openweathermap.org/data/2.5/weather?q=${this.state.value}&appid=${apiKey}&units=metric`
+    const API = `http://api.openweathermap.org/data/2.5/weather?q=${this.state.value}&appid=${apiKey}&units=metric`
 
     fetch(API)
       .then(response => {
@@ -33,15 +33,31 @@ export default class App extends Component {
         }
         throw Error("Failed")
       })
-      // .then(response => response.json())
-      .then( response => {
-
-        console.log(response)
+      
+      .then(response => response.json())
+      .then( data => {
+        const time = new Date().toLocaleString()
+        this.setState({
+          error: false,
+          date: time,
+          city: data.name,
+          sunrise: data.sys.sunrise ,
+          sunset: data.sys.sunset,
+          temp: data.main.temp,
+          pressure: data.main.pressure,
+          wind: data.wind.speed
+        })
       }
       
         
       )
-      .catch(error => console.log(error))
+      .catch(error => {
+        this.setState(state => ({
+          error: true,
+          city: this.state.value
+        }))
+        console.log(error)
+      })
   }
   render() {
     return (
@@ -50,7 +66,7 @@ export default class App extends Component {
           value={this.state.value} 
           change={this.handleInputChange}
           submit={this.handleCitySubmit}/>
-        <Result/>
+        <Result weather={this.state}/>
       </div>
     )
   }
