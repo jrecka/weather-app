@@ -15,7 +15,8 @@ export default class App extends Component {
     temp: '',
     pressure: '',
     wind: '',
-    error: ''
+    error: '', 
+    main:''
   }
   handleInputChange = e => {
     this.setState({
@@ -45,11 +46,13 @@ export default class App extends Component {
           sunset: data.sys.sunset,
           temp: data.main.temp,
           pressure: data.main.pressure,
-          wind: data.wind.speed
+          wind: data.wind.speed, 
+          main: data.weather[0].main,
+          weather: ''
         })
+        console.log(API)
+        this.setBg()
       }
-      
-        
       )
       .catch(error => {
         this.setState(state => ({
@@ -58,15 +61,30 @@ export default class App extends Component {
         }))
         console.log(error)
       })
+      
+  }
+  setBg = () => {
+    const weather = this.state.main
+    if(weather === 'Clear') {
+     this.setState({
+       weather: 'sunny-bg'
+     })
+    } else {
+      this.setState({
+        weather: 'cloudy-bg'
+      })
+    } 
   }
   render() {
     return (
-      <div className='container mt-5'>
-        <Form 
-          value={this.state.value} 
-          change={this.handleInputChange}
-          submit={this.handleCitySubmit}/>
-        <Result weather={this.state}/>
+      <div className={`bg ${this.state.weather}`}>
+        <div className='container pt-5'>
+          <Form 
+            value={this.state.value} 
+            change={this.handleInputChange}
+            submit={this.handleCitySubmit}/>
+          <Result weather={this.state}/>
+        </div>
       </div>
     )
   }

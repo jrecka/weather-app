@@ -1,3 +1,17 @@
 .form-width {
   width: 20rem;
 }
+.bg {
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.sunny-bg{
+
+  background-image: url('https://images.pexels.com/photos/1049298/pexels-photo-1049298.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+
+}
+.cloudy-bg {
+  background-image: url('https://images.pexels.com/photos/531972/pexels-photo-531972.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+}
